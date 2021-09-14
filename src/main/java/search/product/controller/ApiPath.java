@@ -1,4 +1,4 @@
-package controller;
+package search.product.controller;
 
 public interface ApiPath {
 
@@ -11,6 +11,7 @@ public interface ApiPath {
 
     //Data nodes
     String PRODUCT = SLASH + API + SLASH + SEARCH_PRODUCT_SERVICE + SLASH + "product";
+    String PHOTO = SLASH + API + SLASH + SEARCH_PRODUCT_SERVICE + SLASH + "photo";
 
 
 }
