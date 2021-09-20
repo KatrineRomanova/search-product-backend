@@ -15,7 +15,7 @@ public class ProductBean {
 
     private String typeRemain;
 
-    private String photo;
+    private Long photoId;
 
     private Long price;
 }

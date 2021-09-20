@@ -1,5 +1,6 @@
 package search.product.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import search.product.model.bean.ProductBean;
@@ -29,18 +30,23 @@ public class Product {
     @Column(name = "type_remain")
     private String typeRemain;
 
-    @Column(name = "photo")
-    private String photo;
-
     @Column(name = "price")
     private Long price;
+
+    @Column(name = "photo_id")
+    private Long photoId;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "photo_id", insertable = false, updatable = false)
+    private Photo photo;
 
     public Product(ProductBean productBean){
         this.productName = productBean.getProductName();
         this.vendorCode = productBean.getVendorCode();
         this.amountRemain = productBean.getAmountRemain();
         this.price = productBean.getPrice();
-        this.photo = productBean.getPhoto();
+        this.photoId = productBean.getPhotoId();
         this.typeRemain = productBean.getTypeRemain();
     }
 

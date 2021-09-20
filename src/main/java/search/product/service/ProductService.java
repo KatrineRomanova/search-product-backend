@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import search.product.model.Product;
 import search.product.model.bean.ProductBean;
 import org.springframework.stereotype.Service;
-import search.product.repo.ProductRepo;
+import search.product.repo.ProductRepository;
 
 import java.util.Collection;
 
@@ -13,21 +13,21 @@ import java.util.Collection;
 @Service
 public class ProductService {
 
-    private final ProductRepo productRepo;
+    private final ProductRepository productRepository;
     private final MappingService mappingService;
 
     public Product getProductById(Long id) {
         if (id != null)
-            return productRepo.findById(id).orElse(null);
+            return productRepository.findById(id).orElse(null);
         return null;
     }
 
     public Collection<Product> getAllProducts() {
-        return productRepo.findAll();
+        return productRepository.findAll();
     }
 
     private Product saveProduct(Product product){
-        return productRepo.save(product);
+        return productRepository.save(product);
     }
 
     public Product createProduct(ProductBean productBean){
@@ -46,7 +46,7 @@ public class ProductService {
 
     public void deleteProduct(Long id){
         if(id != null)
-            productRepo.deleteById(id);
+            productRepository.deleteById(id);
     }
 
 }

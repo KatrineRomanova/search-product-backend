@@ -31,8 +31,9 @@ public class ProductController {
     @ResponseBody
     public ResponseEntity<Product> getByProductId(@PathVariable("id") Long productId) {
         if(productId == null)
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity(productService.getProductById(productId), HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(productService.getProductById(productId), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get all Products", notes ="Returns all products with HTTP.OK. " +
@@ -44,7 +45,7 @@ public class ProductController {
     @GetMapping(path = "/all")
     @ResponseBody
     public ResponseEntity<Collection<Product>> getAllProducts() {
-        return new ResponseEntity(productService.getAllProducts(), HttpStatus.OK);
+        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create Product By ID", notes ="Returns product with HTTP.OK. " +
@@ -57,8 +58,8 @@ public class ProductController {
     @ResponseBody
     public ResponseEntity<Product> createProduct(@RequestBody ProductBean productBean) {
         if(productBean == null)
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity(productService.createProduct(productBean), HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(productService.createProduct(productBean), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Update Product By ID", notes ="Returns product with HTTP.OK. " +
@@ -71,8 +72,8 @@ public class ProductController {
     @ResponseBody
     public ResponseEntity<Product> updateProduct(@RequestBody ProductBean productBean) {
         if(productBean == null)
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity(productService.updateProduct(productBean), HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(productService.updateProduct(productBean), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete Product By ID", notes ="Returns HTTP.OK. " +

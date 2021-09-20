@@ -14,7 +14,7 @@ public class MappingService {
             product.setVendorCode(productBean.getVendorCode());
             product.setAmountRemain(productBean.getAmountRemain());
             product.setPrice(productBean.getPrice());
-            product.setPhoto(productBean.getPhoto());
+            product.setPhotoId(productBean.getPhotoId());
             product.setTypeRemain(productBean.getTypeRemain());
         }
         return product;
