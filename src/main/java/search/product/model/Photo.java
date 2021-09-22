@@ -20,11 +20,15 @@ public class Photo {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "photo_url")
-    private String photoUrl;
+    @Column(name = "cloudinary_id")
+    private String cloudinaryId;
 
-    public Photo(String photoUrl){
-        this.photoUrl = photoUrl;
+    @Column(name = "url")
+    private String url;
+
+    public Photo(String cloudinaryId, String url){
+        this.cloudinaryId = cloudinaryId;
+        this.url = url;
     }
 
 }

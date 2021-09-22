@@ -35,7 +35,6 @@ public class PhotoController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         Photo photo = photoService.getPhotoById(photoId);
-        System.out.println(photo);
         return new ResponseEntity<>(photo, HttpStatus.OK);
     }
 
@@ -51,6 +50,26 @@ public class PhotoController {
         if(photoFile != null) {
             try {
                 return new ResponseEntity<>(photoService.uploadPhoto(photoFile), HttpStatus.OK);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @ApiOperation(value = "Delete Photo By ID", notes ="Returns HTTP.OK. " +
+            "Can returns HTTP.BAD_REQUEST if id is null.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Bad request")}
+    )
+    @DeleteMapping(path = "/delete/{id}")
+    @ResponseBody
+    public ResponseEntity deletePhoto(@PathVariable("id") Long photoId) {
+        if(photoId != null) {
+            try {
+                photoService.deletePhoto(photoId);
+                return new ResponseEntity(HttpStatus.OK);
             } catch (IOException e) {
                 e.printStackTrace();
             }

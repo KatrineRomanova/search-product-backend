@@ -1,25 +1,20 @@
 package search.product.service;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import search.product.model.Photo;
 import search.product.repo.PhotoRepository;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.security.SecureRandom;
-import java.util.Map;
 
 
 @Service
 @AllArgsConstructor
 public class PhotoService {
     public final PhotoRepository photoRepository;
+    public final PhotoCloudinaryService photoCloudinaryService;
 
     public Photo getPhotoById(Long id) {
         if (id != null)
@@ -27,37 +22,24 @@ public class PhotoService {
         return null;
     }
 
-    private Photo savePhoto(Photo photo){
-        return photoRepository.save(photo);
+    private Photo savePhoto(Photo photo) {
+        if (photo != null)
+            return photoRepository.save(photo);
+        return null;
     }
 
+    @Transactional
     public Photo uploadPhoto(MultipartFile multipartFile) throws IOException {
-        URL photoUrl = uploadPhotoToCloudinary(multipartFile);
-
-        Photo photo = new Photo(photoUrl.toString());
+        Photo photo = photoCloudinaryService.uploadPhotoToCloudinary(multipartFile);
         return savePhoto(photo);
     }
 
-    public URL uploadPhotoToCloudinary(MultipartFile multipartFile) throws IOException {
-        RandomStringGenerator randomStringGenerator = new RandomStringGenerator(10, new SecureRandom());
-
-        String fileName = randomStringGenerator.nextString();
-
-        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", "dil2e8syz",
-                "api_key", "472111977347574",
-                "api_secret", "_y6fAMQBfc68zKCjq7fJc-Fqeeg"));
-
-        File toUpload = new File(fileName);
-        FileOutputStream fileOutputStream = new FileOutputStream(toUpload);
-        fileOutputStream.write(multipartFile.getBytes());
-        fileOutputStream.flush();
-
-        Map uploadResult = cloudinary.uploader().upload(toUpload, ObjectUtils.emptyMap());
-        toUpload.delete();
-
-        String urlString = uploadResult.get("url").toString();
-        URL url = new URL(urlString);
-        return url;
+    @Transactional
+    public void deletePhoto(Long id) throws IOException {
+        if (id != null) {
+            Photo photo = getPhotoById(id);
+            if(photoCloudinaryService.deletePhotoFromCloudinary(photo.getCloudinaryId()))
+                photoRepository.deleteById(id);
+        }
     }
 }
